@@ -1,5 +1,5 @@
 # -*- coding = utf-8 -*-
-# @Time : 2024/9/16 下午10:36
+# @Time : 2024/9/14 下午10:36
 # @Author : 李兆堃
 # @File : Learn_Rule.py
 # @Software : PyCharm
@@ -17,9 +17,7 @@ def Perception(x, out, lr, d, trans_fun):
 
 
 def Delta_rule(x, out, lr, d, trans_fun):
-    f = getattr(Trans_Fun, trans_fun)
-    h = 1e-5
-    f_prime = (f(out + h) - f(out - h)) / (2 * h)
+    f_prime = (1 - out * out) / 2
 
     return lr * (d - out) * f_prime * x
     pass
