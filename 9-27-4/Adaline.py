@@ -1,7 +1,7 @@
 # -*- coding = utf-8 -*-
 # @Time : 2024/9/26 上午8:50
 # @Author : 李兆堃
-# @File : Adaline.py
+# @File : Network.py
 # @Software : PyCharm
 from typing import Literal
 from Trans_Fun import Trans_Fun
@@ -36,7 +36,7 @@ class Adaline:
                 # print(X, Delta_W, self.W)
                 # for raw in range(len(self.W)):
                 self.W[:, sample_index] += Delta_W.flatten()
-                print(e)
+                print(f'epoch: {epoch}, e: {e}')
                 if -1e-13 < e < 1e-13:
                     break_count += 1
 

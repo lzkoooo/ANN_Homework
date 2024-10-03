@@ -36,59 +36,47 @@ def generated_data():
 if __name__ == '__main__':
     train_X, train_Y, my_voice, time = generated_data()
     W = 4 * np.random.rand(len(train_X[0]), len(train_Y)).astype(np.float64) - 2
-    eta = 1
+    eta = 0.3
     max_epoch = 20
 
-    # 初始化线性回归模型（类似 ADALINE）
     model = Adaline(train_X, W, train_Y, eta, 'linear', max_epoch)
-
-    # 拟合模型
     model.fit()
-
-    # 预测输出
     pred, e = model.predict(train_X)
 
-    # # 播放混合信号（可选）
-    # # sd.play(eeg, fs)
-    # # sd.wait()  # 等待播放结束
-    #
     # # 绘制结果
     plt.figure(figsize=(12, 8))
+    plt.text(0, 1.03, 'not use delay', fontsize=30, color='red', zorder=3)
+
     # 绘制混合信号
-    plt.subplot(5, 1, 1)
-    plt.plot(time[:-2], my_voice[:-2], 'r')
-    plt.title('my_voice')
+    plt.subplot(4, 1, 1)
+    plt.plot(time[:-2], train_Y, 'k-', zorder=1)
+    plt.title('mix_voice (target_data)')
     plt.xlabel('time (s)')
     plt.ylabel('range')
 
-    plt.subplot(5, 1, 2)
-    plt.plot(time[:-2], train_X[0], 'b')
-    plt.title('other_voice')
-    plt.xlabel('time (s)')
-    plt.ylabel('range')
-
-    # 绘制混合信号
-    plt.subplot(5, 1, 3)
-    plt.plot(time[:-2], train_Y, 'k-')
-    plt.title('mix_voice')
+    # 绘制噪声信号
+    plt.subplot(4, 1, 2)
+    plt.plot(time[:-2], train_X[0], 'b', zorder=1)
+    plt.title('other_voice (input_data)')
     plt.xlabel('time (s)')
     plt.ylabel('range')
 
     # 绘制预测信号
-    plt.subplot(5, 1, 4)
-    plt.plot(time[:-2], pred, 'y')
+    plt.subplot(4, 1, 3)
+    plt.plot(time[:-2], pred, 'y', zorder=1)
     plt.title('pred')
     plt.xlabel('time (s)')
     plt.ylabel('range')
 
     # 绘制消除噪声信号
-    plt.subplot(5, 1, 5)
-    plt.plot(time[:-2], e, 'g')
-    plt.title('error')
+    plt.subplot(4, 1, 4)
+    plt.plot(time[:-2], e, 'g', zorder=1)
+    plt.title('filter (error)')
     plt.xlabel('time (s)')
     plt.ylabel('range')
 
     plt.tight_layout()
+    plt.savefig('result.png', dpi=300)
     plt.show()
 
 

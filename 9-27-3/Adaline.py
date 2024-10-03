@@ -1,7 +1,7 @@
 # -*- coding = utf-8 -*-
 # @Time : 2024/9/26 上午8:50
 # @Author : 李兆堃
-# @File : Adaline.py
+# @File : Network.py
 # @Software : PyCharm
 from typing import Literal
 from Trans_Fun import Trans_Fun
