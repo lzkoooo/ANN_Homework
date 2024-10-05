@@ -6,7 +6,7 @@ import QtQuick.Layouts 1.12
 import '..'
 
 Page {
-    name: 'BP'
+    name: 'BP算法'
     ColumnLayout {
         GroupBox {
             title: 'Dataset'
@@ -24,6 +24,18 @@ Page {
                     bpBridge.current_dataset_name = currentText
                     dataChart.updateDataset(bpBridge.dataset_dict[datasetCombobox.currentText])
                 }
+            }
+        }
+        GroupBox {
+            title: 'Activation Function'
+            Layout.fillWidth: true
+            ComboBox {
+                id: activationCombobox
+                anchors.fill: parent
+                model: ['sigmoid', 'bipolar sigmoid']
+                enabled: bpBridge.has_finished
+                onActivated: bpBridge.activation_function_name = currentText
+                Component.onCompleted: bpBridge.activation_function_name = currentText
             }
         }
         GroupBox {
@@ -75,31 +87,31 @@ Page {
                     Component.onCompleted: bpBridge.initial_learning_rate = value / 100
                     Layout.fillWidth: true
                 }
-                Label {
-                    text: 'Search Iteration Constant'
-                    Layout.alignment: Qt.AlignHCenter
-                }
-                SpinBox {
-                    enabled: bpBridge.has_finished
-                    editable: true
-                    value: 10000
-                    to: 999999
-                    onValueChanged: bpBridge.search_iteration_constant = value
-                    Component.onCompleted: bpBridge.search_iteration_constant = value
-                    Layout.fillWidth: true
-                }
-                Label {
-                    text: 'Momentum Weight'
-                    Layout.alignment: Qt.AlignHCenter
-                }
-                DoubleSpinBox {
-                    enabled: bpBridge.has_finished
-                    editable: true
-                    value: 0.5 * 100
-                    from: 0
-                    to: 99
-                    Layout.fillWidth: true
-                }
+                // Label {
+                //     text: 'Search Iteration Constant'
+                //     Layout.alignment: Qt.AlignHCenter
+                // }
+                // SpinBox {
+                //     enabled: mlpBridge.has_finished
+                //     editable: true
+                //     value: 10000
+                //     to: 999999
+                //     onValueChanged: mlpBridge.search_iteration_constant = value
+                //     Component.onCompleted: mlpBridge.search_iteration_constant = value
+                //     Layout.fillWidth: true
+                // }
+                // Label {
+                //     text: 'Momentum Weight'
+                //     Layout.alignment: Qt.AlignHCenter
+                // }
+                // DoubleSpinBox {
+                //     enabled: bpBridge.has_finished
+                //     editable: true
+                //     value: 0.5 * 100
+                //     from: 0
+                //     to: 99
+                //     Layout.fillWidth: true
+                // }
                 Label {
                     text: 'Test-Train Ratio'
                     Layout.alignment: Qt.AlignHCenter
@@ -163,7 +175,16 @@ Page {
                     Layout.fillWidth: true
                 }
                 Label {
-                    text: 'Current Training Epoch'
+                    text: '激活函数'
+                    Layout.alignment: Qt.AlignHCenter
+                }
+                Label {
+                    text: bpBridge.activation_function_name
+                    horizontalAlignment: Text.AlignHCenter
+                    Layout.fillWidth: true
+                }
+                Label {
+                    text: '训练轮次'
                     Layout.alignment: Qt.AlignHCenter
                 }
                 Label {
@@ -178,7 +199,7 @@ Page {
                     }
                 }
                 Label {
-                    text: 'Current Training Iteration'
+                    text: '训练迭代次数'
                     Layout.alignment: Qt.AlignHCenter
                 }
                 Label {
@@ -201,7 +222,7 @@ Page {
                     Layout.fillWidth: true
                 }
                 Label {
-                    text: 'Current Learning Rate'
+                    text: '学习率'
                     Layout.alignment: Qt.AlignHCenter
                 }
                 Label {
@@ -210,7 +231,7 @@ Page {
                     Layout.fillWidth: true
                 }
                 Label {
-                    text: 'Best Training Correct Rate'
+                    text: '训练集最佳正确率'
                     Layout.alignment: Qt.AlignHCenter
                 }
                 Label {
@@ -219,7 +240,7 @@ Page {
                     Layout.fillWidth: true
                 }
                 Label {
-                    text: 'Current Training Correct Rate'
+                    text: '训练集正确率'
                     Layout.alignment: Qt.AlignHCenter
                 }
                 Label {
@@ -228,7 +249,7 @@ Page {
                     Layout.fillWidth: true
                 }
                 Label {
-                    text: 'Current Testing Correct Rate'
+                    text: '测试集正确率'
                     Layout.alignment: Qt.AlignHCenter
                 }
                 Label {

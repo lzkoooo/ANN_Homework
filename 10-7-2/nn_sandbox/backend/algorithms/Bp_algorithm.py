@@ -12,7 +12,7 @@ class BpAlgorithm(PredictiveAlgorithm):
 
     def __init__(self, dataset, total_epoches=10, most_correct_rate=None,
                  initial_learning_rate=0.8, search_iteration_constant=10000,
-                 momentum_weight=0.5, test_ratio=0.3, network_shape=None, activation_function='sigmoid'):
+                 momentum_weight=0.5, test_ratio=0.3, network_shape=None, activation_function_name='sigmoid'):
 
         super().__init__(dataset, total_epoches, most_correct_rate,
                          initial_learning_rate, search_iteration_constant,
@@ -25,8 +25,8 @@ class BpAlgorithm(PredictiveAlgorithm):
         # for momentum
         self._synaptic_weight_diff = collections.defaultdict(lambda: 0)     # 字典中没这个值就默认0
 
-        self.activation_function_name = activation_function
-        if activation_function == 'sigmoid':
+        self.activation_function_name = activation_function_name
+        if self.activation_function_name == 'sigmoid':
             self.activation_function = sigmoid
         else:
             self.activation_function = uni_sigmoid
