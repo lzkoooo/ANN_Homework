@@ -50,7 +50,7 @@ def run_train(X, D, W, lr, trans_fun, learn_rule, max_epoch):
 # if __name__ == '__main__':
 #     W_T = np.array([[1], [0], [1]]).astype(float)  # 初始权向量
 #     lr = 0.25
-#     d = [-1, 1]
+#     D = [-1, 1]
 #
 #     X, trans_fun, learn_rule = select_data()
 #     print('选择的数据：\n样本：{}\n变换函数：{}\n学习规则：{}'.format(X, trans_fun, learn_rule))

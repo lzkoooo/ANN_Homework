@@ -50,7 +50,7 @@ if __name__ == '__main__':
     X, D, trans_fun, learn_rule = select_data()
     print('\n\n选择的数据：\n样本：')
     for i in range(len(X)):
-        print('x = {}\nd = {}\n'.format(X[i], D[i]))
+        print('x = {}\nD = {}\n'.format(X[i], D[i]))
     print('变换函数：{}\n学习规则：{}\n初始权向量：{}'.format(trans_fun, learn_rule, W))
 
     run_train(X, D, W, lr, trans_fun, learn_rule, max_epoch)

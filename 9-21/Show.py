@@ -128,7 +128,7 @@ class MainWindow(QMainWindow):
         X = []
         for i in range(len(self.X)):
             x = [float(x) for x in re.findall(r'-?\d+', self.X[i])]
-            if 'd = ' in self.X[i]:
+            if 'D = ' in self.X[i]:
                 D.append(x[-1])
                 x = np.array(x[:-1]).reshape(-1, 1)
             else:
@@ -184,9 +184,9 @@ class SampleWindow(CustomDialog):
         super().__init__()
         self.setWindowTitle("选择样本")
         layout = self.layout
-        self.All_X = ['X = (1, -3, 5, 2, 7, 2)^T, d = 3', 'X = (1, -2)^T', 'X = (0, 1)^T', 'X = (2, 3)^T',
-                      'X = (1, 1)^T', 'X = (2, 1, -1)^T, d = -1', 'X = (0, -1, -1)^T, d = 1',
-                      'X = (2, 0, -1)^T, d = -1', 'X = (1, -2, -1)^T, d = 1']
+        self.All_X = ['X = (1, -3, 5, 2, 7, 2)^T, D = 3', 'X = (1, -2)^T', 'X = (0, 1)^T', 'X = (2, 3)^T',
+                      'X = (1, 1)^T', 'X = (2, 1, -1)^T, D = -1', 'X = (0, -1, -1)^T, D = 1',
+                      'X = (2, 0, -1)^T, D = -1', 'X = (1, -2, -1)^T, D = 1']
         self.addCheckbox(self.All_X)
         self.add_OK_Close()
         self.setLayout(layout)
