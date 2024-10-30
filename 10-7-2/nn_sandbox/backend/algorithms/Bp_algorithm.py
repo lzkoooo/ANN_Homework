@@ -4,7 +4,7 @@ import numpy as np
 
 from . import PredictiveAlgorithm
 from ..neurons import Perceptron
-from ..utils import sigmoid, uni_sigmoid
+from ..utils import sigmoid, bi_sigmoid
 
 
 class BpAlgorithm(PredictiveAlgorithm):
@@ -29,7 +29,7 @@ class BpAlgorithm(PredictiveAlgorithm):
         if self.activation_function_name == 'sigmoid':
             self.activation_function = sigmoid
         else:
-            self.activation_function = uni_sigmoid
+            self.activation_function = bi_sigmoid
 
     def _iterate(self):
         result = self._feed_forward(self.current_data[:-1])

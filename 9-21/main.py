@@ -1,7 +1,7 @@
 # -*- coding = utf-8 -*-
 # @Time : 2024/9/12 下午1:31
 # @Author : 李兆堃
-# @File : main.py
+# @File : 4-6.py
 # @Software : PyCharm
 
 import re

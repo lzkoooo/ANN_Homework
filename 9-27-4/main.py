@@ -1,7 +1,7 @@
 # -*- coding = utf-8 -*-
 # @Time : 2024/9/26 下午9:44
 # @Author : 李兆堃
-# @File : main.py
+# @File : 4-6.py
 # @Software : PyCharm
 
 import numpy as np
