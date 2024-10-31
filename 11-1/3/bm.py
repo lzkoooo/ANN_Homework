@@ -15,7 +15,7 @@ class BoltzmannMachine:
         self.temperature = temperature
         self.states = np.random.choice([-1, 1], num_neurons)  # 初始化神经元状态
         self.weights = np.random.uniform(-1, 1, (num_neurons, num_neurons))  # 初始化权值
-        np.fill_diagonal(self.weights, 0)  # 去掉自连项
+        np.fill_diagonal(self.weights, 0)
         self.previous_energy = self.calculate_energy()  # 记录初始能量
         self.equilibrium_threshold = equilibrium_threshold
 
