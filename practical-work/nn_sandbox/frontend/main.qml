@@ -20,8 +20,11 @@ ApplicationWindow {
             Perceptron {}
             Adaline {}
             Mlp {}
+            Bp {}
             Rbfn {}
             Som {}
+            Hopfield {}
+            Bm {}
         }
     }
 

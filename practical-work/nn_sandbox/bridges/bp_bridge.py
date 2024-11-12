@@ -2,18 +2,18 @@ import time
 
 import PyQt5.QtCore
 
-from nn_sandbox.backend.algorithms import AdalineAlgorithm
+from ..backend.algorithms import BpAlgorithm
 from . import Bridge, BridgeProperty
 from .observer import Observable
 
 
-class AdalineBridge(Bridge):
+class BpBridge(Bridge):
     ui_refresh_interval = BridgeProperty(0.0)
     dataset_dict = BridgeProperty({})
     training_dataset = BridgeProperty([])
     testing_dataset = BridgeProperty([])
     current_dataset_name = BridgeProperty('')
-    total_epoches = BridgeProperty(10)
+    total_epoches = BridgeProperty(5)
     most_correct_rate_checkbox = BridgeProperty(True)
     most_correct_rate = BridgeProperty(0.98)
     initial_learning_rate = BridgeProperty(0.8)
@@ -27,14 +27,15 @@ class AdalineBridge(Bridge):
     current_correct_rate = BridgeProperty(0.0)
     test_correct_rate = BridgeProperty(0.0)
     has_finished = BridgeProperty(True)
+    activation_function_name = BridgeProperty('')
 
     def __init__(self):
         super().__init__()
-        self.adaline_algorithm = None
+        self.bp_algorithm = None
 
     @PyQt5.QtCore.pyqtSlot()
-    def start_mlp_algorithm(self):
-        self.adaline_algorithm = ObservableMlpAlgorithm(
+    def start_bp_algorithm(self):
+        self.bp_algorithm = ObservableBpAlgorithm(
             self,
             self.ui_refresh_interval,
             dataset=self.dataset_dict[self.current_dataset_name],
@@ -44,13 +45,14 @@ class AdalineBridge(Bridge):
             search_iteration_constant=self.search_iteration_constant,
             momentum_weight=self.momentum_weight,
             test_ratio=self.test_ratio,
-            network_shape=self.network_shape
+            network_shape=self.network_shape,
+            activation_function_name=self.activation_function_name
         )
-        self.adaline_algorithm.start()
+        self.bp_algorithm.start()
 
     @PyQt5.QtCore.pyqtSlot()
-    def stop_mlp_algorithm(self):
-        self.adaline_algorithm.stop()
+    def stop_bp_algorithm(self):
+        self.bp_algorithm.stop()
 
     @property
     def _most_correct_rate(self):
@@ -59,10 +61,10 @@ class AdalineBridge(Bridge):
         return None
 
 
-class ObservableMlpAlgorithm(Observable, AdalineAlgorithm):
+class ObservableBpAlgorithm(Observable, BpAlgorithm):
     def __init__(self, observer, ui_refresh_interval, **kwargs):
         Observable.__init__(self, observer)
-        AdalineAlgorithm.__init__(self, **kwargs)
+        BpAlgorithm.__init__(self, **kwargs)
         self.ui_refresh_interval = ui_refresh_interval
 
     def __setattr__(self, name, value):

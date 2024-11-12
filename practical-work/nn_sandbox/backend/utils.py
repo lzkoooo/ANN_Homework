@@ -16,6 +16,10 @@ def sigmoid(value):
     return 1 / (1 + math.exp(-value))
 
 
+def bi_sigmoid(value):
+    return (1 - math.exp(-value)) / (1 + math.exp(-value))
+
+
 def gaussian(value: np.ndarray, mean: np.ndarray, standard_deviation):
     if standard_deviation == 0:
         return 0
