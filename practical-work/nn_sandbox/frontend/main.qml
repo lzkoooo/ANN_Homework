@@ -27,6 +27,7 @@ ApplicationWindow {
             Som {}
             Hopfield {}
             Bm {}
+            Grad {}
         }
     }
 
