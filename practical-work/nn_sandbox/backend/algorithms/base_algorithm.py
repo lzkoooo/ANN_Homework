@@ -9,9 +9,9 @@ import numpy as np
 class TraningAlgorithm(threading.Thread, abc.ABC):
     def __init__(self, dataset, total_epoches):
         super().__init__()
-        self._dataset = np.array(dataset)
+        self._dataset = np.array(dataset)   # 对数据集进行np转化
         self._total_epoches = total_epoches
-        self._neuron = []
+        self._neurons = []
         self._should_stop = False
 
     def stop(self):
@@ -37,16 +37,16 @@ class PredictiveAlgorithm(TraningAlgorithm, abc.ABC):
 
     def run(self):
         self._initialize_neurons()
-        for self.current_iterations in range(self._total_epoches * len(self.training_dataset)):      # 线程启动后循环运行
+        for self.current_iterations in range(self._total_epoches * len(self.training_dataset)):     # 默认单样本为1个iteration
             if self._should_stop:
                 break
-            if self.current_iterations % len(self.training_dataset) == 0:
+            if self.current_iterations % len(self.training_dataset) == 0:   # 每过一个epoch就打乱一下数据集
                 np.random.shuffle(self.training_dataset)
-            self._iterate()     # 循环运行_iterate(),该函数一般在据图的algorithm中定义
+            self._iterate()
             self._save_best_neurons()
-            if self._most_correct_rate and self.best_correct_rate >= self._most_correct_rate:
+            if self._most_correct_rate and self.best_correct_rate >= self._most_correct_rate:   # 准确率达到设定值就停止
                 break
-        self._load_best_neurons()
+        self._load_best_neurons()   # 训练结束，加载最佳神经元
 
     def test(self):
         return self._correct_rate(self.testing_dataset)
@@ -67,18 +67,19 @@ class PredictiveAlgorithm(TraningAlgorithm, abc.ABC):
         self.current_correct_rate = self._correct_rate(self.training_dataset)
         if self.current_correct_rate > self.best_correct_rate:
             self.best_correct_rate = self.current_correct_rate
-            self._best_neurons = copy.deepcopy(self._neuron)
+            self._best_neurons = copy.deepcopy(self._neurons)
 
     def _load_best_neurons(self):
-        self._neuron = copy.deepcopy(self._best_neurons)
+        self._neurons = copy.deepcopy(self._best_neurons)
 
     @property
     def current_data(self):
-        return self.training_dataset[self.current_iterations % len(self.training_dataset)]
+        return self.training_dataset[self.current_iterations % len(self.training_dataset)]  # 返回当前训练数据
 
     @property
     def current_learning_rate(self):
-        return self._initial_learning_rate / (1 + self.current_iterations / self._search_iteration_constant)
+        return self._initial_learning_rate / (1 + self.current_iterations
+                                              / self._search_iteration_constant)
 
     @property
     @functools.lru_cache()

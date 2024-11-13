@@ -30,25 +30,25 @@ class AdalineAlgorithm(PredictiveAlgorithm):
 
     def _initialize_neurons(self):
         """ Build the neuron network with single neuron as output layer. """
-        self._neuron = Perceptron(linear)
+        self._neurons = Perceptron(linear)
 
     def _feed_forward(self, data):
-        result = get_layer_results(self._neuron, data)
+        result = get_layer_results(self._neurons, data)
         return result
 
     def _adjust_synaptic_weights(self, expect, result):
-        self._synaptic_weight_diff = self.current_learning_rate * (expect - result) * self._neuron.data / np.dot(self._neuron.data.T, self._neuron.data)
-        self._neuron.synaptic_weight += self._synaptic_weight_diff
+        self._synaptic_weight_diff = self.current_learning_rate * (expect - result) * self._neurons.data / np.dot(self._neurons.data.T, self._neurons.data)
+        self._neurons.synaptic_weight += self._synaptic_weight_diff
 
     def _correct_rate(self, dataset):
-        if not self._neuron:
+        if not self._neurons:
             return 0
         correct_count = 0
         for data in dataset:
             self._feed_forward(data[:-1])
             expect = self._normalize(data[-1])
             interval = 1 / (2 * len(self.group_types))
-            if expect - interval < self._neuron.result < expect + interval:
+            if expect - interval < self._neurons.result < expect + interval:
                 correct_count += 1
         if correct_count == 0:
             return 0

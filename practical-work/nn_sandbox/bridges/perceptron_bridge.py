@@ -66,10 +66,7 @@ class ObservablePerceptronAlgorithm(Observable, PerceptronAlgorithm):
         super().__setattr__(name, value)
         if name == 'current_iterations':
             self.notify(name, value)
-            self.notify('current_synaptic_weights',
-                        [neuron.synaptic_weight.tolist()
-                         for neuron in self._neurons
-                         if neuron.synaptic_weight is not None])
+            self.notify('current_synaptic_weights', [neuron.synaptic_weight.tolist() for neuron in self._neurons if neuron.synaptic_weight is not None])
             self.notify('test_correct_rate', self.test())
         elif name in ('best_correct_rate', 'current_correct_rate'):
             self.notify(name, value)
