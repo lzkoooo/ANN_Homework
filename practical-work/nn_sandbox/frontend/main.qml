@@ -9,6 +9,8 @@ ApplicationWindow {
     id: window
     visible: true
     title: 'Neuron Network Sandbox'
+    x:800
+    y:400
     // XXX: using body.implicitWidth will cause BadValue and BadWindow error in
     // Linux (Kubuntu). Need further research. Currently, I use
     // Component.onCompleted instead as a workaround.

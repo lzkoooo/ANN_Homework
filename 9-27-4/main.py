@@ -35,6 +35,13 @@ def generated_data():
 
 if __name__ == '__main__':
     train_X, train_Y, my_voice, time = generated_data()
+    data = []
+    ori_data = []
+    for i in range(len(time) - 3):
+        data.append([train_X[0][i][0], train_X[0][i+1][0], train_Y[i][0]])
+        ori_data.append([my_voice[i], my_voice[i+1]])
+    np.savetxt('9-27-4-train.txt', np.array(data))
+    np.savetxt('9-27-4-ori_data.txt', np.array(ori_data))
     W = 4 * np.random.rand(len(train_X[0]), len(train_Y)).astype(np.float64) - 2
     eta = 0.3
     max_epoch = 20

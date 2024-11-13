@@ -4,6 +4,8 @@ import QtQuick.Layouts 1.12
 Pane {
     property alias startButton: startButton
     property alias stopButton: stopButton
+    property alias applyButton1: applyButton1
+    property alias applyButton2: applyButton2
     property alias progressBar: progressBar
     
     ColumnLayout {
@@ -22,6 +24,18 @@ Pane {
                 radius: 0
                 ToolTip.visible: hovered
                 ToolTip.text: 'Stop Training'
+            }
+            Button {
+                id: applyButton1
+                text: 'Apply'
+                visible: false
+                enabled: false
+            }
+            Button {
+                id: applyButton2
+                text: 'Apply'
+                visible: false
+                enabled: false
             }
         }
         ProgressBar {

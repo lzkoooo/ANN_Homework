@@ -14,15 +14,15 @@ Page {
             ComboBox {
                 id: datasetCombobox
                 anchors.fill: parent
-                model: Object.keys(mlpBridge.dataset_dict)
-                enabled: mlpBridge.has_finished
+                model: Object.keys(adalineBridge.dataset_dict)
+                enabled: adalineBridge.has_finished
                 onActivated: () => {
-                    mlpBridge.current_dataset_name = currentText
-                    dataChart.updateDataset(mlpBridge.dataset_dict[datasetCombobox.currentText])
+                    adalineBridge.current_dataset_name = currentText
+                    dataChart.updateDataset(adalineBridge.dataset_dict[datasetCombobox.currentText])
                 }
                 Component.onCompleted: () => {
-                    mlpBridge.current_dataset_name = currentText
-                    dataChart.updateDataset(mlpBridge.dataset_dict[datasetCombobox.currentText])
+                    adalineBridge.current_dataset_name = currentText
+                    dataChart.updateDataset(adalineBridge.dataset_dict[datasetCombobox.currentText])
                 }
             }
         }
@@ -38,29 +38,29 @@ Page {
                 }
                 SpinBox {
                     id: totalEpoches
-                    enabled: mlpBridge.has_finished
+                    enabled: adalineBridge.has_finished
                     editable: true
                     value: 10
                     to: 999999
-                    onValueChanged: mlpBridge.total_epoches = value
-                    Component.onCompleted: mlpBridge.total_epoches = value
+                    onValueChanged: adalineBridge.total_epoches = value
+                    Component.onCompleted: adalineBridge.total_epoches = value
                     Layout.fillWidth: true
                 }
                 CheckBox {
                     id: mostCorrectRateCheckBox
-                    enabled: mlpBridge.has_finished
+                    enabled: adalineBridge.has_finished
                     text: 'Most Correct Rate'
                     checked: true
-                    onCheckedChanged: mlpBridge.most_correct_rate_checkbox = checked
-                    Component.onCompleted: mlpBridge.most_correct_rate_checkbox = checked
+                    onCheckedChanged: adalineBridge.most_correct_rate_checkbox = checked
+                    Component.onCompleted: adalineBridge.most_correct_rate_checkbox = checked
                     Layout.alignment: Qt.AlignHCenter
                 }
                 DoubleSpinBox {
-                    enabled: mostCorrectRateCheckBox.checked && mlpBridge.has_finished
+                    enabled: mostCorrectRateCheckBox.checked && adalineBridge.has_finished
                     editable: true
                     value: 1.00 * 100
-                    onValueChanged: mlpBridge.most_correct_rate = value / 100
-                    Component.onCompleted: mlpBridge.most_correct_rate = value / 100
+                    onValueChanged: adalineBridge.most_correct_rate = value / 100
+                    Component.onCompleted: adalineBridge.most_correct_rate = value / 100
                     Layout.fillWidth: true
                 }
                 Label {
@@ -68,36 +68,11 @@ Page {
                     Layout.alignment: Qt.AlignHCenter
                 }
                 DoubleSpinBox {
-                    enabled: mlpBridge.has_finished
+                    enabled: adalineBridge.has_finished
                     editable: true
                     value: 0.8 * 100
-                    onValueChanged: mlpBridge.initial_learning_rate = value / 100
-                    Component.onCompleted: mlpBridge.initial_learning_rate = value / 100
-                    Layout.fillWidth: true
-                }
-                Label {
-                    text: 'Search Iteration Constant'
-                    Layout.alignment: Qt.AlignHCenter
-                }
-                SpinBox {
-                    enabled: mlpBridge.has_finished
-                    editable: true
-                    value: 10000
-                    to: 999999
-                    onValueChanged: mlpBridge.search_iteration_constant = value
-                    Component.onCompleted: mlpBridge.search_iteration_constant = value
-                    Layout.fillWidth: true
-                }
-                Label {
-                    text: 'Momentum Weight'
-                    Layout.alignment: Qt.AlignHCenter
-                }
-                DoubleSpinBox {
-                    enabled: mlpBridge.has_finished
-                    editable: true
-                    value: 0.5 * 100
-                    from: 0
-                    to: 99
+                    onValueChanged: adalineBridge.initial_learning_rate = value / 100
+                    Component.onCompleted: adalineBridge.initial_learning_rate = value / 100
                     Layout.fillWidth: true
                 }
                 Label {
@@ -105,13 +80,13 @@ Page {
                     Layout.alignment: Qt.AlignHCenter
                 }
                 DoubleSpinBox {
-                    enabled: mlpBridge.has_finished
+                    enabled: adalineBridge.has_finished
                     editable: true
                     value: 0.3 * 100
                     from: 30
                     to: 90
-                    onValueChanged: mlpBridge.test_ratio = value / 100
-                    Component.onCompleted: mlpBridge.test_ratio = value / 100
+                    onValueChanged: adalineBridge.test_ratio = value / 100
+                    Component.onCompleted: adalineBridge.test_ratio = value / 100
                     Layout.fillWidth: true
                 }
                 Label {
@@ -119,24 +94,15 @@ Page {
                     Layout.alignment: Qt.AlignHCenter
                 }
                 DoubleSpinBox {
-                    enabled: mlpBridge.has_finished
+                    enabled: adalineBridge.has_finished
                     editable: true
-                    value: 0 * 100
+                    value: 0.0 * 100
                     from: 0 * 100
                     to: 5 * 100
-                    onValueChanged: mlpBridge.ui_refresh_interval = value / 100
-                    Component.onCompleted: mlpBridge.ui_refresh_interval = value / 100
+                    onValueChanged: adalineBridge.ui_refresh_interval = value / 100
+                    Component.onCompleted: adalineBridge.ui_refresh_interval = value / 100
                     Layout.fillWidth: true
                 }
-            }
-        }
-        GroupBox {
-            title: 'Network'
-            Layout.fillWidth: true
-            NetworkSetting {
-                enabled: mlpBridge.has_finished
-                onShapeChanged: mlpBridge.network_shape = shape
-                Component.onCompleted: mlpBridge.network_shape = shape
             }
         }
         GroupBox {
@@ -148,17 +114,36 @@ Page {
                 anchors.right: parent.right
                 columns: 2
                 ExecutionControls {
-                    startButton.enabled: mlpBridge.has_finished
+                    applyButton1.visible: true
+                    applyButton1.text: "9月27日第三题"
+                    applyButton2.visible: true
+                    applyButton2.text: "9月27日第四题"
+
+                    startButton.enabled: adalineBridge.has_finished
                     startButton.onClicked: () => {
-                        mlpBridge.start_mlp_algorithm()
+                        adalineBridge.start_adaline_algorithm()
                         dataChart.clear()
-                        dataChart.updateTrainingDataset(mlpBridge.training_dataset)
-                        dataChart.updateTestingDataset(mlpBridge.testing_dataset)
+                        dataChart.updateTrainingDataset(adalineBridge.training_dataset)
+                        dataChart.updateTestingDataset(adalineBridge.testing_dataset)
                         rateChart.reset()
+                        if (datasetCombobox.currentText === '9-27-3-train')
+                        {applyButton1.enabled = true;}
+                        else if (datasetCombobox.currentText === '9-27-4-train')
+                        {applyButton2.enabled = true;}
                     }
-                    stopButton.enabled: !mlpBridge.has_finished
-                    stopButton.onClicked: mlpBridge.stop_mlp_algorithm()
-                    progressBar.value: (mlpBridge.current_iterations + 1) / (totalEpoches.value * mlpBridge.training_dataset.length)
+                    stopButton.enabled: !adalineBridge.has_finished
+                    stopButton.onClicked: {
+                        adalineBridge.stop_adaline_algorithm()
+                    }
+                    applyButton1.onClicked:{
+                        adalineBridge.apply_topic = 3
+                        adalineBridge.apply_adaline_algorithm()
+                    }
+                    applyButton2.onClicked:{
+                        adalineBridge.apply_topic = 4
+                        adalineBridge.apply_adaline_algorithm()
+                    }
+                    progressBar.value: (adalineBridge.current_iterations + 1) / (totalEpoches.value * adalineBridge.training_dataset.length)
                     Layout.columnSpan: 2
                     Layout.fillWidth: true
                 }
@@ -171,7 +156,7 @@ Page {
                     horizontalAlignment: Text.AlignHCenter
                     Layout.fillWidth: true
                     function currentEpoch() {
-                        const epoch = Math.floor(mlpBridge.current_iterations / mlpBridge.training_dataset.length) + 1
+                        const epoch = Math.floor(adalineBridge.current_iterations / adalineBridge.training_dataset.length) + 1
                         if (isNaN(epoch))
                             return 1
                         return epoch
@@ -182,20 +167,20 @@ Page {
                     Layout.alignment: Qt.AlignHCenter
                 }
                 Label {
-                    text: mlpBridge.current_iterations + 1
+                    text: adalineBridge.current_iterations + 1
                     horizontalAlignment: Text.AlignHCenter
                     onTextChanged: () => {
                         rateChart.bestCorrectRate.append(
-                            mlpBridge.current_iterations + 1,
-                            mlpBridge.best_correct_rate
+                            adalineBridge.current_iterations + 1,
+                            adalineBridge.best_correct_rate
                         )
                         rateChart.trainingCorrectRate.append(
-                            mlpBridge.current_iterations + 1,
-                            mlpBridge.current_correct_rate
+                            adalineBridge.current_iterations + 1,
+                            adalineBridge.current_correct_rate
                         )
                         rateChart.testingCorrectRate.append(
-                            mlpBridge.current_iterations + 1,
-                            mlpBridge.test_correct_rate
+                            adalineBridge.current_iterations + 1,
+                            adalineBridge.test_correct_rate
                         )
                     }
                     Layout.fillWidth: true
@@ -205,7 +190,7 @@ Page {
                     Layout.alignment: Qt.AlignHCenter
                 }
                 Label {
-                    text: mlpBridge.current_learning_rate.toFixed(toFixedValue)
+                    text: adalineBridge.current_learning_rate.toFixed(toFixedValue)
                     horizontalAlignment: Text.AlignHCenter
                     Layout.fillWidth: true
                 }
@@ -214,7 +199,7 @@ Page {
                     Layout.alignment: Qt.AlignHCenter
                 }
                 Label {
-                    text: mlpBridge.best_correct_rate.toFixed(toFixedValue)
+                    text: adalineBridge.best_correct_rate.toFixed(toFixedValue)
                     horizontalAlignment: Text.AlignHCenter
                     Layout.fillWidth: true
                 }
@@ -223,7 +208,7 @@ Page {
                     Layout.alignment: Qt.AlignHCenter
                 }
                 Label {
-                    text: mlpBridge.current_correct_rate.toFixed(toFixedValue)
+                    text: adalineBridge.current_correct_rate.toFixed(toFixedValue)
                     horizontalAlignment: Text.AlignHCenter
                     Layout.fillWidth: true
                 }
@@ -232,7 +217,7 @@ Page {
                     Layout.alignment: Qt.AlignHCenter
                 }
                 Label {
-                    text: mlpBridge.test_correct_rate.toFixed(toFixedValue)
+                    text: adalineBridge.test_correct_rate.toFixed(toFixedValue)
                     horizontalAlignment: Text.AlignHCenter
                     Layout.fillWidth: true
                 }

@@ -27,30 +27,32 @@ class AdalineBridge(Bridge):
     current_correct_rate = BridgeProperty(0.0)
     test_correct_rate = BridgeProperty(0.0)
     has_finished = BridgeProperty(True)
+    apply_topic = BridgeProperty(0)
 
     def __init__(self):
         super().__init__()
         self.adaline_algorithm = None
 
     @PyQt5.QtCore.pyqtSlot()
-    def start_mlp_algorithm(self):
-        self.adaline_algorithm = ObservableMlpAlgorithm(
+    def start_adaline_algorithm(self):
+        self.adaline_algorithm = ObservableAdalineAlgorithm(
             self,
             self.ui_refresh_interval,
             dataset=self.dataset_dict[self.current_dataset_name],
             total_epoches=self.total_epoches,
             most_correct_rate=self._most_correct_rate,
             initial_learning_rate=self.initial_learning_rate,
-            search_iteration_constant=self.search_iteration_constant,
-            momentum_weight=self.momentum_weight,
             test_ratio=self.test_ratio,
-            network_shape=self.network_shape
         )
         self.adaline_algorithm.start()
 
     @PyQt5.QtCore.pyqtSlot()
-    def stop_mlp_algorithm(self):
+    def stop_adaline_algorithm(self):
         self.adaline_algorithm.stop()
+
+    @PyQt5.QtCore.pyqtSlot()
+    def apply_adaline_algorithm(self):
+        self.adaline_algorithm.apply(self.apply_topic)
 
     @property
     def _most_correct_rate(self):
@@ -59,13 +61,13 @@ class AdalineBridge(Bridge):
         return None
 
 
-class ObservableMlpAlgorithm(Observable, AdalineAlgorithm):
+class ObservableAdalineAlgorithm(Observable, AdalineAlgorithm):
     def __init__(self, observer, ui_refresh_interval, **kwargs):
         Observable.__init__(self, observer)
         AdalineAlgorithm.__init__(self, **kwargs)
         self.ui_refresh_interval = ui_refresh_interval
 
-    def __setattr__(self, name, value):
+    def __setattr__(self, name, value):  # 自动拦截赋值
         super().__setattr__(name, value)
         if name == 'current_iterations':
             self.notify(name, value)
@@ -81,6 +83,7 @@ class ObservableMlpAlgorithm(Observable, AdalineAlgorithm):
         super().run()
         self.notify('test_correct_rate', self.test())
         self.notify('has_finished', True)
+        self.notify('apply_result', self.apply_result)
 
     def _iterate(self):
         super()._iterate()
