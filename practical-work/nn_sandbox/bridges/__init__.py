@@ -7,4 +7,5 @@ from .mlp_bridge import MlpBridge
 from .bp_bridge import BpBridge
 from .rbfn_bridge import RbfnBridge
 from .som_bridge import SomBridge
+from .hopfield_bridge import HopfieldBridge
 from .grad_bridge import GradBridge

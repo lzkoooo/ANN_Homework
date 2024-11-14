@@ -5,7 +5,7 @@ import PyQt5.QtQml
 import PyQt5.QtCore
 import PyQt5.QtWidgets
 
-from nn_sandbox.bridges import PerceptronBridge, MlpBridge, RbfnBridge, SomBridge, AdalineBridge, BpBridge, GradBridge
+from nn_sandbox.bridges import PerceptronBridge, MlpBridge, RbfnBridge, SomBridge, AdalineBridge, BpBridge, GradBridge, HopfieldBridge
 import nn_sandbox.backend.utils
 
 if __name__ == '__main__':
@@ -23,6 +23,7 @@ if __name__ == '__main__':
         'bpBridge': BpBridge(),
         'rbfnBridge': RbfnBridge(),
         'somBridge': SomBridge(),
+        'hopfieldBridge': HopfieldBridge(),
         'gradBridge': GradBridge()
     }
     for name in bridges:
