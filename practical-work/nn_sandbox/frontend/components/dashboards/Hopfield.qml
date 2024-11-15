@@ -113,7 +113,9 @@ Page {
                     ExecutionControls {
                         startButton.enabled: hopfieldBridge.has_finished
                         startButton.onClicked: () => {
+                            hopfieldBridge.topic = datasetCombobox.currentText
                             hopfieldBridge.start_hopfield_algorithm()
+
                             dataChart.clear()
                             dataChart.updateTrainingDataset(hopfieldBridge.training_dataset)
                             dataChart.updateTestingDataset(hopfieldBridge.testing_dataset)

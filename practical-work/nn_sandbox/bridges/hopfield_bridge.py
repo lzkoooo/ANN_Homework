@@ -27,6 +27,7 @@ class HopfieldBridge(Bridge):
     states = BridgeProperty([])
     energys = BridgeProperty([])
     attractors = BridgeProperty([])
+    topic = BridgeProperty('')
 
 
     def __init__(self):
@@ -41,11 +42,9 @@ class HopfieldBridge(Bridge):
             dataset=self.dataset_dict[self.current_dataset_name],
             total_epoches=self.total_epoches,
             initial_learning_rate=self.initial_learning_rate,
-            search_iteration_constant=self.search_iteration_constant,
-            test_ratio=self.test_ratio,
-            network_shape=self.network_shape,
             mode_name=self.hnn_mode,
-            train_mode=self.train_mode
+            train_mode=self.train_mode,
+            topic=self.topic
         )
         self.hopfield_algorithm.start()
 
@@ -66,7 +65,7 @@ class ObservableHopfieldAlgorithm(Observable, HopfieldAlgorithm):
             self.notify(name, value)
         elif name in ('training_dataset', 'testing_dataset') and value is not None:
             self.notify(name, value.tolist())
-        elif name in ('states', 'energys', 'attractors'):
+        elif name in ('current_states', 'energys', 'attractors'):
             self.notify(name, value)
 
     def run(self):
