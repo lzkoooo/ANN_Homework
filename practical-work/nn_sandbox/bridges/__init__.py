@@ -9,3 +9,4 @@ from .rbfn_bridge import RbfnBridge
 from .som_bridge import SomBridge
 from .hopfield_bridge import HopfieldBridge
 from .grad_bridge import GradBridge
+from .bm_bridge import BmBridge

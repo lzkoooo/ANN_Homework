@@ -2,7 +2,7 @@ import time
 
 import PyQt5.QtCore
 
-from nn_sandbox.backend.algorithms import AdalineAlgorithm
+from ..backend.algorithms import AdalineAlgorithm
 from . import Bridge, BridgeProperty
 from .observer import Observable
 

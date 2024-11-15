@@ -6,7 +6,19 @@ import numpy as np
 
 from . import TraningAlgorithm
 from ..neurons import SomNeuron
+from ..som import SOMApp1, SOMApp2, SOMApp3, SOMApp4
 from ..utils import dist, flatten
+
+
+def apply(topic):
+    if topic == 1:
+        SOMApp1().exec_()
+    elif topic == 2:
+        SOMApp2().exec_()
+    elif topic == 3:
+        SOMApp3().exec_()
+    elif topic == 4:
+        SOMApp4().exec_()
 
 
 class SomAlgorithm(TraningAlgorithm):
@@ -82,3 +94,4 @@ class SomAlgorithm(TraningAlgorithm):
             -self.current_iterations /
             (self._total_epoches * len(self._dataset))
         )
+

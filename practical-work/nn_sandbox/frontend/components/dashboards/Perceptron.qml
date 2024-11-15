@@ -128,6 +128,13 @@ Page {
                 anchors.right: parent.right
                 columns: 2
                 ExecutionControls {
+                    applyButton3.visible: true
+                    applyButton3.enabled: true
+                    applyButton3.text: "9月21日2.8题"
+                    applyButton3.onClicked:{
+                        perceptronBridge.apply_ann_algorithm()
+                    }
+
                     startButton.enabled: perceptronBridge.has_finished
                     startButton.onClicked: () => {
                         perceptronBridge.start_perceptron_algorithm()

@@ -22,11 +22,9 @@ Page {
                     enabled: hopfieldBridge.has_finished
                     onActivated: () => {
                         hopfieldBridge.current_dataset_name = currentText
-                        dataChart.updateDataset(hopfieldBridge.dataset_dict[datasetCombobox.currentText])
                     }
                     Component.onCompleted: () => {
                         hopfieldBridge.current_dataset_name = currentText
-                        dataChart.updateDataset(hopfieldBridge.dataset_dict[datasetCombobox.currentText])
                     }
                 }
             }
@@ -93,7 +91,7 @@ Page {
                     DoubleSpinBox {
                         enabled: hopfieldBridge.has_finished
                         editable: true
-                        value: 0 * 100
+                        value: 1 * 100
                         from: 0 * 100
                         to: 5 * 100
                         onValueChanged: hopfieldBridge.ui_refresh_interval = value / 100
@@ -111,29 +109,22 @@ Page {
                     anchors.right: parent.right
                     columns: 2
                     ExecutionControls {
+                        applyButton3.visible: true
+                        applyButton3.enabled: true
+                        applyButton3.text: "11月1日第二题TSP问题"
+                        applyButton3.onClicked:{
+                        hopfieldBridge.apply_hopfield_algorithm()
+                    }
+
                         startButton.enabled: hopfieldBridge.has_finished
                         startButton.onClicked: () => {
                             hopfieldBridge.topic = datasetCombobox.currentText
                             hopfieldBridge.start_hopfield_algorithm()
-
-                            dataChart.clear()
-                            dataChart.updateTrainingDataset(hopfieldBridge.training_dataset)
-                            dataChart.updateTestingDataset(hopfieldBridge.testing_dataset)
-                            rateChart.reset()
                         }
                         stopButton.enabled: !hopfieldBridge.has_finished
                         stopButton.onClicked: hopfieldBridge.stop_hopfield_algorithm()
-                        progressBar.value: (hopfieldBridge.current_iterations + 1) / (totalEpoches.value * hopfieldBridge.training_dataset.length)
+                        progressBar.value: (hopfieldBridge.current_iterations + 1) / (totalEpoches.value * hopfieldBridge.dataset_dict.length)
                         Layout.columnSpan: 2
-                        Layout.fillWidth: true
-                    }
-                    Label {
-                        text: '激活函数'
-                        Layout.alignment: Qt.AlignHCenter
-                    }
-                    Label {
-                        text: hopfieldBridge.activation_function_name
-                        horizontalAlignment: Text.AlignHCenter
                         Layout.fillWidth: true
                     }
                     Label {
@@ -146,7 +137,7 @@ Page {
                         Layout.fillWidth: true
 
                         function currentEpoch() {
-                            const epoch = Math.floor(hopfieldBridge.current_iterations / hopfieldBridge.training_dataset.length) + 1
+                            const epoch = Math.floor(hopfieldBridge.current_iterations / hopfieldBridge.dataset_dict.length) + 1
                             if (isNaN(epoch))
                                 return 1
                             return epoch
@@ -185,8 +176,8 @@ Page {
                     text: "神经元当前状态"
                     horizontalAlignment: Text.AlignHCenter
                 }
-                Label {
-                    text: hopfieldBridge.states
+                Text {
+                    text: hopfieldBridge.new_states_matrix.join("\n")
                     horizontalAlignment: Text.AlignHCenter
                     Layout.fillWidth: true
                 }
@@ -194,8 +185,8 @@ Page {
                     text: "神经元当前能量"
                     horizontalAlignment: Text.AlignHCenter
                 }
-                Label {
-                    text: hopfieldBridge.energys
+                Text {
+                    text: hopfieldBridge.energys.join("\n")
                     horizontalAlignment: Text.AlignHCenter
                     Layout.fillWidth: true
                 }
@@ -203,8 +194,8 @@ Page {
                     text: "吸引子"
                     horizontalAlignment: Text.AlignHCenter
                 }
-                Label {
-                    text: hopfieldBridge.attractors
+                Text {
+                    text: hopfieldBridge.attractors.join("\n")
                     horizontalAlignment: Text.AlignHCenter
                     Layout.fillWidth: true
                 }

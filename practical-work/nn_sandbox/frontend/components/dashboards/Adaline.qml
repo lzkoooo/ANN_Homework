@@ -126,9 +126,9 @@ Page {
                         dataChart.updateTrainingDataset(adalineBridge.training_dataset)
                         dataChart.updateTestingDataset(adalineBridge.testing_dataset)
                         rateChart.reset()
-                        if (datasetCombobox.currentText === '9月27日Adaline第3题train')
+                        if (datasetCombobox.currentText === 'Adaline_9月27日第3题train')
                         {applyButton1.enabled = true;}
-                        else if (datasetCombobox.currentText === '9月27日Adaline第4题train.txt')
+                        else if (datasetCombobox.currentText === 'Adaline_9月27日第4题train')
                         {applyButton2.enabled = true;}
                     }
                     stopButton.enabled: !adalineBridge.has_finished

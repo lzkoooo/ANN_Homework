@@ -2,7 +2,8 @@ import time
 
 import PyQt5.QtCore
 
-from nn_sandbox.backend.algorithms import PerceptronAlgorithm
+from ..backend.algorithms import PerceptronAlgorithm
+from ..backend.ANN import ANNStudy
 from . import Bridge, BridgeProperty
 from .observer import Observable
 
@@ -55,6 +56,9 @@ class PerceptronBridge(Bridge):
             return self.most_correct_rate
         return None
 
+    @PyQt5.QtCore.pyqtSlot()
+    def apply_ann_algorithm(self):
+        ANNStudy().exec_()
 
 class ObservablePerceptronAlgorithm(Observable, PerceptronAlgorithm):
     def __init__(self, observer, ui_refresh_interval, **kwargs):

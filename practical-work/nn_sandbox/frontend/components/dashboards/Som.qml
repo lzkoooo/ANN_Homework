@@ -128,6 +128,37 @@ Page {
                 anchors.right: parent.right
                 columns: 2
                 ExecutionControls {
+                    applyButton3.visible: true
+                    applyButton3.enabled: true
+                    applyButton3.text: "10月21日4.6"
+                    applyButton4.visible: true
+                    applyButton4.enabled: true
+                    applyButton4.text: "10月21日4.10"
+                    applyButton5.visible: true
+                    applyButton5.enabled: true
+                    applyButton5.text: "10月21日第二题"
+                    applyButton6.visible: true
+                    applyButton6.enabled: true
+                    applyButton6.text: "10月21日上机练习"
+                    applyButton3.onClicked:{
+                        somBridge.apply_topic = 1
+                        somBridge.apply_som_algorithm()
+                    }
+                    applyButton4.onClicked:{
+                        somBridge.apply_topic = 2
+                        somBridge.apply_som_algorithm()
+                    }
+                    applyButton5.onClicked:{
+                        somBridge.apply_topic = 3
+                        somBridge.apply_som_algorithm()
+                    }
+                    applyButton6.onClicked:{
+                        somBridge.apply_topic = 4
+                        somBridge.apply_som_algorithm()
+                    }
+                    
+                    
+                    
                     startButton.enabled: somBridge.has_finished
                     startButton.onClicked: somBridge.start_som_algorithm()
                     stopButton.enabled: !somBridge.has_finished

@@ -2,7 +2,7 @@ import time
 
 import PyQt5.QtCore
 
-from nn_sandbox.backend.algorithms import MlpAlgorithm
+from ..backend.algorithms import MlpAlgorithm
 from . import Bridge, BridgeProperty
 from .observer import Observable
 

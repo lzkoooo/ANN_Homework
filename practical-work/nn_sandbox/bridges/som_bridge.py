@@ -2,7 +2,7 @@ import time
 
 import PyQt5.QtCore
 
-from nn_sandbox.backend.algorithms import SomAlgorithm
+from ..backend.algorithms import SomAlgorithm, apply
 from . import Bridge, BridgeProperty
 from .observer import Observable
 
@@ -20,6 +20,7 @@ class SomBridge(Bridge):
     current_standard_deviation = BridgeProperty(0.0)
     has_finished = BridgeProperty(True)
     current_synaptic_weights = BridgeProperty([])
+    apply_topic = BridgeProperty(0)
 
     def __init__(self):
         super().__init__()
@@ -42,6 +43,9 @@ class SomBridge(Bridge):
     def stop_som_algorithm(self):
         self.som_algorithm.stop()
 
+    @PyQt5.QtCore.pyqtSlot()
+    def apply_som_algorithm(self):
+        apply(self.apply_topic)
 
 class ObservableSomAlgorithm(Observable, SomAlgorithm):
     def __init__(self, observer, ui_refresh_interval, **kwargs):

@@ -2,7 +2,7 @@ import time
 
 import PyQt5.QtCore
 
-from ..backend.algorithms import HopfieldAlgorithm
+from ..backend.algorithms import HopfieldAlgorithm, hop_apply
 from . import Bridge, BridgeProperty
 from .observer import Observable
 
@@ -10,8 +10,6 @@ from .observer import Observable
 class HopfieldBridge(Bridge):
     ui_refresh_interval = BridgeProperty(0.0)
     dataset_dict = BridgeProperty({})
-    training_dataset = BridgeProperty([])
-    testing_dataset = BridgeProperty([])
     current_dataset_name = BridgeProperty('')
     total_epoches = BridgeProperty(5)
     initial_learning_rate = BridgeProperty(0.8)
@@ -22,13 +20,13 @@ class HopfieldBridge(Bridge):
     current_correct_rate = BridgeProperty(0.0)
     test_correct_rate = BridgeProperty(0.0)
     has_finished = BridgeProperty(True)
+
     hnn_mode = BridgeProperty('')
     train_mode = BridgeProperty('')
-    states = BridgeProperty([])
+    new_states_matrix = BridgeProperty([])
     energys = BridgeProperty([])
     attractors = BridgeProperty([])
     topic = BridgeProperty('')
-
 
     def __init__(self):
         super().__init__()
@@ -44,13 +42,17 @@ class HopfieldBridge(Bridge):
             initial_learning_rate=self.initial_learning_rate,
             mode_name=self.hnn_mode,
             train_mode=self.train_mode,
-            topic=self.topic
+            topic=self.topic,
         )
         self.hopfield_algorithm.start()
 
     @PyQt5.QtCore.pyqtSlot()
     def stop_hopfield_algorithm(self):
         self.hopfield_algorithm.stop()
+
+    @PyQt5.QtCore.pyqtSlot()
+    def apply_hopfield_algorithm(self):
+        hop_apply()
 
 
 class ObservableHopfieldAlgorithm(Observable, HopfieldAlgorithm):
@@ -63,10 +65,8 @@ class ObservableHopfieldAlgorithm(Observable, HopfieldAlgorithm):
         super().__setattr__(name, value)
         if name == 'current_iterations':
             self.notify(name, value)
-        elif name in ('training_dataset', 'testing_dataset') and value is not None:
+        elif name in ('new_states_matrix', 'energys', 'attractors') and value is not None:
             self.notify(name, value.tolist())
-        elif name in ('current_states', 'energys', 'attractors'):
-            self.notify(name, value)
 
     def run(self):
         self.notify('has_finished', False)

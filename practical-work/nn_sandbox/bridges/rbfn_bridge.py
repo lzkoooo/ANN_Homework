@@ -2,7 +2,7 @@ import time
 
 import PyQt5.QtCore
 
-from nn_sandbox.backend.algorithms import RbfnAlgorithm
+from ..backend.algorithms import RbfnAlgorithm
 from . import Bridge, BridgeProperty
 from .observer import Observable
 
