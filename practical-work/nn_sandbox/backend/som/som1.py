@@ -55,7 +55,7 @@ class SOMApp1(QDialog):
         layout.addWidget(self.weightsLabel)
 
         self.inputField = QLineEdit()
-        self.inputField.setPlaceholderText('请输入测试向量 (用逗号分隔，例如 1,1,0,0)')
+        self.inputField.setPlaceholderText('先完成训练，请输入测试向量测试 (用逗号分隔，例如 1,1,0,0)')
         layout.addWidget(self.inputField)
 
         self.predictButton = QPushButton('测试输入')

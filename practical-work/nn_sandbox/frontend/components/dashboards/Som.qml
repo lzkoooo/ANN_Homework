@@ -83,7 +83,7 @@ Page {
                         id: topologyRowCount
                         enabled: somBridge.has_finished
                         editable: true
-                        value: 10
+                        value: 5
                         from: 1
                         to: 999
                         onValueChanged: somBridge.topology_shape = [value, topologyColumnCount.value]
@@ -95,7 +95,7 @@ Page {
                         id: topologyColumnCount
                         enabled: somBridge.has_finished
                         editable: true
-                        value: 10
+                        value: 5
                         from: 1
                         to: 999
                         onValueChanged: somBridge.topology_shape = [topologyRowCount.value, value]

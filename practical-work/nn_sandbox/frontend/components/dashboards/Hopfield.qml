@@ -91,7 +91,7 @@ Page {
                     DoubleSpinBox {
                         enabled: hopfieldBridge.has_finished
                         editable: true
-                        value: 1 * 100
+                        value: 0.75 * 100
                         from: 0 * 100
                         to: 5 * 100
                         onValueChanged: hopfieldBridge.ui_refresh_interval = value / 100

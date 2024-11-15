@@ -1,6 +1,11 @@
 import time
 
 import PyQt5.QtCore
+import numpy as np
+from PyQt5.QtWidgets import QPushButton, QVBoxLayout, QDialog
+from matplotlib import pyplot as plt, image as mpimg
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
 
 from ..backend.algorithms import RbfnAlgorithm
 from . import Bridge, BridgeProperty
@@ -13,13 +18,13 @@ class RbfnBridge(Bridge):
     training_dataset = BridgeProperty([])
     testing_dataset = BridgeProperty([])
     current_dataset_name = BridgeProperty('')
-    total_epoches = BridgeProperty(10)
+    total_epoches = BridgeProperty(5000)
     most_correct_rate_checkbox = BridgeProperty(True)
     most_correct_rate = BridgeProperty(0.98)
-    acceptable_range = BridgeProperty(0.5)
-    initial_learning_rate = BridgeProperty(0.8)
+    acceptable_range = BridgeProperty(0.9)
+    initial_learning_rate = BridgeProperty(0.001)
     search_iteration_constant = BridgeProperty(10000)
-    cluster_count = BridgeProperty(3)
+    cluster_count = BridgeProperty(10)
     test_ratio = BridgeProperty(0.3)
     current_iterations = BridgeProperty(0)
     current_learning_rate = BridgeProperty(0.0)
@@ -28,10 +33,42 @@ class RbfnBridge(Bridge):
     test_correct_rate = BridgeProperty(0.0)
     has_finished = BridgeProperty(True)
     current_neurons = BridgeProperty([])
+    topic = BridgeProperty(0)
 
     def __init__(self):
         super().__init__()
         self.rbfn_algorithm = None
+
+
+    def rbf(self, x, center, sigma):
+        return np.exp(-np.linalg.norm(x - center) ** 2 / (2 * sigma ** 2))
+
+    def rbf_network(self, X):
+        weights = []
+        centers = []
+        sigmas = []
+
+        self.show_y = np.array([], dtype=float)
+        self.show_y = np.array([], dtype=float)
+        for neuron in self.current_neurons:
+            m = neuron['mean']
+            sd = neuron['standard_deviation']
+            sw = neuron['synaptic_weight']
+            weights.append(sw)
+            centers.append(m)
+            sigmas.append(sd)
+        for x in X:
+            self.show_y = np.append(self.show_y, sum(w * self.rbf(x, c, s) for w, c, s in zip(weights, centers, sigmas)))
+
+    @PyQt5.QtCore.pyqtSlot()
+    def draw(self):
+        if self.topic == 1:
+            show_data = np.arange(-4, 4, 0.1)
+        elif self.topic == 2:
+            show_data = np.arange(-1.2, 1.2, 0.1)
+        self.rbf_network(show_data)
+        PlotDialog(show_data, self.show_y).exec_()
+        pass
 
     @PyQt5.QtCore.pyqtSlot()
     def start_rbfn_algorithm(self):
@@ -59,6 +96,35 @@ class RbfnBridge(Bridge):
             return self.most_correct_rate
         return None
 
+class PlotDialog(QDialog):
+    def __init__(self, show_data, show_y, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("图像展示")
+        self.resize(800, 600)
+
+        self.show_data = show_data
+        self.show_y = show_y
+
+        layout = QVBoxLayout(self)
+
+        self.figure = Figure()
+        self.canvas = FigureCanvas(self.figure)
+        layout.addWidget(self.canvas)
+
+        button = QPushButton("关闭")
+        button.clicked.connect(self.close)
+        layout.addWidget(button)
+
+        self.plot()
+
+    def plot(self):
+        ax = self.figure.add_subplot(111)
+        ax.clear()
+        ax.plot(self.show_data, self.show_y, 'b')  # 绘制蓝色线条
+        ax.set_title("Show")
+        ax.set_xlabel("X-axis")
+        ax.set_ylabel("Y-axis")
+        self.canvas.draw()  # 刷新 Canvas
 
 class ObservableRbfnAlgorithm(Observable, RbfnAlgorithm):
     def __init__(self, observer, ui_refresh_interval, **kwargs):

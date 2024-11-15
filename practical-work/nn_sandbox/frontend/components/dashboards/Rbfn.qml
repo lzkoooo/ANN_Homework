@@ -71,7 +71,7 @@ Page {
                 DoubleSpinBox {
                     enabled: rbfnBridge.has_finished
                     editable: true
-                    value: 0.5 * 100
+                    value: 0.2 * 100
                     to: 999999 * 100
                     onValueChanged: rbfnBridge.acceptable_range = value / 100
                     Component.onCompleted: rbfnBridge.acceptable_range = value / 100
@@ -84,7 +84,7 @@ Page {
                 DoubleSpinBox {
                     enabled: rbfnBridge.has_finished
                     editable: true
-                    value: 0.8 * 100
+                    value: 0.05 * 100
                     onValueChanged: rbfnBridge.initial_learning_rate = value / 100
                     Component.onCompleted: rbfnBridge.initial_learning_rate = value / 100
                     Layout.fillWidth: true
@@ -110,7 +110,7 @@ Page {
                     id: clusterCount
                     enabled: rbfnBridge.has_finished
                     editable: true
-                    value: 3
+                    value: 4
                     from: 1
                     to: Math.ceil((rbfnBridge.dataset_dict[datasetCombobox.currentText].length) * (1 - rbfnBridge.test_ratio))
                     onValueChanged: rbfnBridge.cluster_count = value
@@ -156,13 +156,25 @@ Page {
                 anchors.right: parent.right
                 columns: 2
                 ExecutionControls {
+                    applyButton1.visible: true
+                    applyButton1.text: '第一题或第二题训练完成后点击画图'
+                    applyButton1.onClicked: () => {
+                        rbfnBridge.draw()
+                    }
+
                     startButton.enabled: rbfnBridge.has_finished
                     startButton.onClicked: () => {
+                        applyButton1.enabled = true
+                        if (datasetCombobox.currentText === 'RBF_10月18日第1题')
+                        {rbfnBridge.topic = 1;}
+                        else if (datasetCombobox.currentText === 'RBF_10月18日第2题')
+                        {rbfnBridge.topic = 2;}
                         rbfnBridge.start_rbfn_algorithm()
                         dataChart.clear()
                         dataChart.updateTrainingDataset(rbfnBridge.training_dataset)
                         dataChart.updateTestingDataset(rbfnBridge.testing_dataset)
                         rateChart.reset()
+
                     }
                     stopButton.enabled: !rbfnBridge.has_finished
                     stopButton.onClicked: rbfnBridge.stop_rbfn_algorithm()
